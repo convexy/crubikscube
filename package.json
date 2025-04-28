@@ -1,0 +1,22 @@
+{
+  "name": "crc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@types/node": "^22.15.2",
+    "three": "^0.176.0"
+  },
+  "author": "convexy",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/three": "^0.176.0",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.3"
+  }
+}
