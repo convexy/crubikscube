@@ -1,3 +1,4 @@
+import { RCAction } from "./cvirtualrubikscube";
 import { CRubiksCube } from "./crubikscube";
 
 import * as THREE from "three";
@@ -43,8 +44,19 @@ scene.add(groundMesh);
 const crc = new CRubiksCube();
 const interval = setInterval(() => {
   if (crc.model) {
-    scene.add(crc.model);
     clearInterval(interval);
+    scene.add(crc.model);
+    const actions = RCAction.generateRandomActions(100);
+    let i = 0;
+    const interval2 = setInterval(() => {
+      if (i < actions.length) {
+        crc.updateStateWithAnimation(actions[i], 100);
+        i++;
+      }
+      else {
+        clearInterval(interval2);
+      }
+    }, 200);
   }
 }, 500);
 

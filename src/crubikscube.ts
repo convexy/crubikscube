@@ -93,7 +93,7 @@ export class CRubiksCube extends CVirtualRubiksCube {
       CRubiksCube.rotatePiece(piece, axis, point, Math.PI / 2)
     }
   }
-  updateStateWithAnimation(action: RCAction) {
+  updateStateWithAnimation(action: RCAction, milliseconds: number = 500, fps: number = 60) {
     super.updateState(action);
     let axis = new THREE.Vector3(1, 0, 0);
     let point = new THREE.Vector3(0, 0, 0);
@@ -159,18 +159,20 @@ export class CRubiksCube extends CVirtualRubiksCube {
     const targets = Object.fromEntries(Object.entries(this.arrangement).filter(([key, value]) => key.includes(face)));
     const permutation = CRubiksCube.convertRCActionToPiecePermutation(action);
     for (const key in targets) this.arrangement[permutation[key]] = targets[key];
+    const steps = Math.floor(milliseconds * fps / 1000);
+    const stepSecond = 1 / fps;
     let angle = 0;
-    const deltaAngle = Math.PI / 2 / 8;
+    const deltaAngle = Math.PI / 2 / steps;
     const interval = setInterval(() => {
       if (angle < Math.PI / 2) {
         for (const piece of Object.values(targets)) {
-          CRubiksCube.rotatePiece(piece, axis, point, deltaAngle);
+          CRubiksCube.rotatePiece(piece, axis, point, Math.min(deltaAngle, Math.PI / 2 - angle));
         }
         angle += deltaAngle;
       } else {
-        clearInterval(interval);  // 目標角度に達したら停止
+        clearInterval(interval);
       }
-    }, 16);
+    }, stepSecond);
   }
   static convertRCActionToPiecePermutation(action: RCAction) {
     let permutation: { [key: string]: string } = {
